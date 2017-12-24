@@ -35,14 +35,20 @@ The goals / steps of this project are the following:
 
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-My pipeline consisted of 5 steps. 
-Step 1: converted the images to grayscale
-Step 2: apply gaussian smoothing reduce high frequency noise 
-Step 3: apply Canny transform to find gradient 
-Step 4: define four sided polygon get region of interest 
-Step 5: apply Hough transform to detect lines 
+####My pipeline consisted of 5 steps. 
+##### Step 1: converted the images to grayscale
+##### Step 2: apply gaussian smoothing reduce high frequency noise 
+##### Step 3: apply Canny transform to find gradient 
+##### Step 4: define four sided polygon get region of interest 
+##### Step 5: apply Hough transform to detect lines 
 
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
+In order to draw a single line on the left and right lanes, I modified the draw_lines() function by following steps
+##### Step 1: filter out unreasonable segment with too small absolute slope
+##### Step 2: seperate segments into 2 groups by sign of the slopes and then average them to avg_left_slope and avg_right_slope value
+##### Step 3: pick initial point with largest y1  to draw line from y=img.shape[0] to y=330. 
+######ps 330 is a tuning number here.  pick largest y1 is trying to resolve the issue in challenge video, but it's does not work.
+
+
 
 If you'd like to include images to show how the pipeline works, here is how to include an image: 
 
@@ -57,13 +63,14 @@ If you'd like to include images to show how the pipeline works, here is how to i
 ### 2. Identify potential shortcomings with your current pipeline
 
 
-One potential shortcoming would be what would happen when ... 
+One potential shortcoming would be what would happen when the lane is not a strait line, say, a curve in challenge video.
 
-Another shortcoming could be ...
+Another shortcoming could be that not all the camera is callibrated before mount on a car. Some magic number should be tuning like 320 in my case to filter out unessary segments.
 
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
+A possible improvement would be to revise draw_line() function. 
+Current pipeline we can only detect line, but we can not detect curve. We should find out some alorithm to detect curve. We should should implement curve fitting function to draw the line instead of line fitting.
 
-Another potential improvement could be to ...
+Another potential improvement could be to that regions_of_interest() could be not robust enough when the camera is not calibrated before mount on the car.
